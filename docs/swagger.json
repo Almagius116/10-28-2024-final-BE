@@ -1,0 +1,235 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Shops API",
+    "version": "1.0.0",
+    "description": "API untuk mendapatkan data toko dengan pagination dan filter nama."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api/v1"
+    }
+  ],
+  "paths": {
+    "/shops": {
+      "get": {
+        "summary": "Get shops data",
+        "description": "Mengambil data toko berdasarkan filter nama dan pagination",
+        "parameters": [
+          {
+            "name": "shopName",
+            "in": "query",
+            "description": "Nama toko untuk dicari",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Nomor halaman",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Jumlah data per halaman",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          },
+          {
+            "name": "productName",
+            "in": "query",
+            "description": "Name of Product to be filter",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success get shops data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string", "example": "Success" },
+                    "message": {
+                      "type": "string",
+                      "example": "Success get shops data"
+                    },
+                    "isSuccess": { "type": "boolean", "example": true },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "totalData": { "type": "integer", "example": 11 },
+                        "shops": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string",
+                                "example": "Schuppe Group"
+                              },
+                              "adminEmail": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "products": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "name": {
+                                      "type": "string",
+                                      "example": "Luxurious Rubber Ball"
+                                    },
+                                    "images": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string",
+                                        "example": "https://ik.imagekit.io/imamth/Profile-17-1729202156932_ieaMdNeZB.png?updatedAt=1729202158471"
+                                      }
+                                    },
+                                    "stock": {
+                                      "type": "integer",
+                                      "example": 27
+                                    },
+                                    "price": {
+                                      "type": "integer",
+                                      "example": 33019
+                                    }
+                                  }
+                                }
+                              },
+                              "user": {
+                                "type": "object",
+                                "properties": {
+                                  "name": {
+                                    "type": "string",
+                                    "example": "Debbie Jakubowski"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "pagination": {
+                          "type": "object",
+                          "properties": {
+                            "page": { "type": "integer", "example": 1 },
+                            "size": { "type": "integer", "example": 10 },
+                            "totalPages": { "type": "integer", "example": 2 }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new shop",
+        "description": "Membuat toko baru dengan nama, email admin, dan userId",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string", "example": "toko imam" },
+                  "adminEmail": {
+                    "type": "string",
+                    "example": "imam@gmail.com"
+                  },
+                  "userId": { "type": "integer", "example": 10 }
+                },
+                "required": ["name", "userId"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success create new Shop",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string", "example": "Success" },
+                    "message": {
+                      "type": "string",
+                      "example": "Success create new Shop"
+                    },
+                    "isSuccess": { "type": "boolean", "example": true },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "newShop": {
+                          "type": "object",
+                          "properties": {
+                            "id": { "type": "integer", "example": 113 },
+                            "name": {
+                              "type": "string",
+                              "example": "toko imam"
+                            },
+                            "userId": { "type": "integer", "example": 10 },
+                            "updatedAt": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "2024-10-29T09:27:12.607Z"
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "2024-10-29T09:27:12.607Z"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed create new Shop",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string", "example": "Failed" },
+                    "message": {
+                      "type": "string",
+                      "example": "An unexpected error occurred"
+                    },
+                    "isSuccess": { "type": "boolean", "example": false },
+                    "data": { "type": "object", "example": null }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
