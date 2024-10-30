@@ -3,13 +3,13 @@ const { Shops, Products, Users } = require("../models");
 const { Op } = require("sequelize");
 
 const createShop = async (req, res) => {
-  const { name, adminEmail, userId } = req.body;
+  const { name, adminEmail } = req.body;
 
   try {
     const newShop = await Shops.create({
       name,
       adminEmail,
-      userId,
+      userId: req.user.id,
     });
 
     res.status(201).json({
